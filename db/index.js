@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const config = require('../config/db');
+require('./models/portfolio');
 
 exports.connect = () => {
   return mongoose.connect(
@@ -9,7 +10,7 @@ exports.connect = () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
-      useFindAndModify:false
+      useFindAndModify: false,
     },
     (err) => {
       if (err) {
