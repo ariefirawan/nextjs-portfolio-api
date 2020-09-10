@@ -14,3 +14,15 @@ exports.getPortfolioById = async (req, res) => {
     return res.status(422).send(error.message);
   }
 };
+
+exports.createPortfolio = async (req, res) => {
+  const data = req.body;
+  const portfolio = new Portfolio(data);
+
+  try {
+    const newPortfolio = await portfolio.save();
+    return res.json(newPortfolio);
+  } catch (e) {
+    return res.status(422).send(e.message);
+  }
+};

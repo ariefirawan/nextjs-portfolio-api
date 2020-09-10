@@ -7,4 +7,6 @@ router.get('', portfolioController.getPortfolios);
 
 router.get('/:id', portfolioController.getPortfolioById);
 
+router.post('', portfolioController.createPortfolio);
+
 module.exports = router;
