@@ -10,6 +10,6 @@ router.get('/:id', portfolioController.getPortfolioById);
 
 router.post('', checkJwt, portfolioController.createPortfolio);
 
-router.patch('/:id', portfolioController.updatePortfolio);
+router.patch('/:id', checkJwt, portfolioController.updatePortfolio);
 
 module.exports = router;
