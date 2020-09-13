@@ -31,3 +31,26 @@ exports.createBlog = async (req, res) => {
     return res.status(422).send(e);
   }
 };
+
+exports.updateBlog = async (req, res) => {
+  const {
+    body,
+    params: { id },
+  } = req;
+
+  Blog.findById(id, async (err, blog) => {
+    if (err) {
+      return res.status(422).send(err.message);
+    }
+
+    blog.set(body);
+    blog.updateAt = new Date();
+
+    try {
+      const updateBlog = await blog.save();
+      return res.json(updateBlog);
+    } catch (err) {
+      res.status(422).send(err.message);
+    }
+  });
+};
