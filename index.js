@@ -9,6 +9,7 @@ async function runServer() {
   app.use(bodyParser.json());
 
   app.use('/api/v1/portfolios', require('./routes/portfolio'));
+  app.use('/api/v1/blogs', require('./routes/blogs'));
 
   const PORT = parseInt(process.env.PORT, 10) || 3001;
   app.listen(PORT, (err) => {
