@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Blog = mongoose.model('Blog');
+const slugify = require('slugify');
 
 exports.getBlogs = async (req, res) => {
   const blogs = await Blog.find({ status: 'published' }).sort({
@@ -47,6 +48,13 @@ exports.updateBlog = async (req, res) => {
   Blog.findById(id, async (err, blog) => {
     if (err) {
       return res.status(422).send(err.message);
+    }
+
+    if (body.status && body.status === 'published' && !blog.slug) {
+      blog.slug = slugify(blog.title, {
+        replacement: '-',
+        lowercase: true,
+      });
     }
 
     blog.set(body);
