@@ -5,6 +5,7 @@ const { checkJwt, checkRole } = require('../controllers/auth');
 const BlogsController = require('../controllers/blogs');
 
 router.get('', BlogsController.getBlogs);
+router.get('/me', checkJwt, checkRole('admin'), BlogsController.getBlogByUser);
 router.get('/:id', BlogsController.getBlogById);
 router.get('/s/:slug', BlogsController.getBlogBySlug);
 router.post('', checkJwt, checkRole('admin'), BlogsController.createBlog);

@@ -8,6 +8,12 @@ exports.getBlogs = async (req, res) => {
   return res.json(blogs);
 };
 
+exports.getBlogByUser = async (req, res) => {
+  const userId = req.user.sub;
+  const blogs = await Blog.find({ userId });
+  return res.json(blogs);
+};
+
 exports.getBlogById = async (req, res) => {
   const id = req.params.id;
   const data = await Blog.findById(id);
