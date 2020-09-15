@@ -12,7 +12,10 @@ exports.getBlogs = async (req, res) => {
 
 exports.getBlogByUser = async (req, res) => {
   const userId = req.user.sub;
-  const blogs = await Blog.find({ userId });
+  const blogs = await Blog.find({
+    userId,
+    status: { $in: ['draft', 'published'] },
+  });
   return res.json(blogs);
 };
 
@@ -67,7 +70,7 @@ exports.updateBlog = async (req, res) => {
     if (body.status && body.status === 'published' && !blog.slug) {
       blog.slug = slugify(blog.title, {
         replacement: '-',
-        lowercase: true,
+        lower: true,
       });
     }
 
