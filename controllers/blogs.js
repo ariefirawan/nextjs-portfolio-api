@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Blog = mongoose.model('Blog');
 const slugify = require('slugify');
+const uniqueSlug = require('unique-slug');
 
 exports.getBlogs = async (req, res) => {
   const blogs = await Blog.find({ status: 'published' }).sort({
@@ -39,6 +40,19 @@ exports.createBlog = async (req, res) => {
   }
 };
 
+const _saveBlog = async (blog) => {
+  try {
+    const createBlog = await blog.save();
+    return createBlog;
+  } catch (err) {
+    if (err.code === 11000 && err.keyPattern && err.keyPattern.slug) {
+      blog.slug += `-${uniqueSlug()}`;
+      return _saveBlog(blog);
+    }
+    throw err;
+  }
+};
+
 exports.updateBlog = async (req, res) => {
   const {
     body,
@@ -61,7 +75,7 @@ exports.updateBlog = async (req, res) => {
     blog.updateAt = new Date();
 
     try {
-      const updateBlog = await blog.save();
+      const updateBlog = await _saveBlog(blog);
       return res.json(updateBlog);
     } catch (err) {
       res.status(422).send(err.message);
