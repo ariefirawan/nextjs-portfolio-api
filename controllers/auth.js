@@ -25,3 +25,17 @@ exports.checkRole = (role) => (req, res, next) => {
       .send('You are not have authorization to access this resource');
   }
 };
+
+exports.getAccessToken = () => {
+  const options = {
+    mathod: 'POST',
+    url: config.AUTH0_TOKEN_URL,
+    headers: { 'content-type': 'application/json' },
+    form: {
+      grant_type: 'client_credentials',
+      client_id: config.AUTH0_CLIENTID,
+      client_secret: config.AUTH0_CLIENT_SECRET,
+      audience_type: config.AUTH0_AUDIENCE,
+    },
+  };
+};
